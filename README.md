@@ -18,7 +18,8 @@ Role Variables
 awscli_pip_package: python-pip
 
 # Version of 'awscli' to install
-awscli_version: 1.11.73
+# 1.16.116 was latest as of 8th July 2019
+awscli_version: 1.16.116
 ```
 
 ```yml
