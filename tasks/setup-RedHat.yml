@@ -1,28 +1,42 @@
 ---
-# ref: https://github.com/dbcli/awscli/blob/v1.8.1/README.md
 
-
-# Install Base OS Packages
-- name: "[Cultivator - Pre-Reqs] Install Base Packages for AWS CLI"
-  yum:
-    name: "{{ pyenv_base_packages }}"
+- name: "Import Microsoft Repository RPM key"
+  ansible.builtin.rpm_key:
     state: present
-    disablerepo: "rhel-server-rhscl-7-rpms"
+    key: "{{azurecli_rpm_key}}"
+
+- name: "RHEL 7 repo created for AzureCLI"
+  ansible.builtin.blockinfile:
+    path: /etc/yum.repos.d/azure-cli.repo
+    create: true
+    block: |  
+      [azure-cli]
+      name=Azure CLI
+      baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+  when: 
+    - ansible_facts['distribution_major_version'] == "7"
+
+- name: "RHEL 8 repository file installed for AzureCLI"
+  ansible.builtin.yum:
+    name: "{{azurecli_rhel8_repo_rpm}}"
+    state: present
+  when:
+    - ansible_facts['distribution_major_version'] == "8" or ansible_distribution_major_version|int < 34
+
+- name: "RHEL 9 repository file installed for AzureCLI"
+  ansible.builtin.yum:
+    name: "{{azurecli_rhel9_repo_rpm}}"
+    state: present
+  when:
+    - ansible_facts['distribution_major_version'] == "9" or ansible_distribution_major_version|int > 33
+
+- name: "Install Base Packages for Azure CLI"
+  ansible.builtin.yum:
+    name: "{{ azurecli_base_packages }}"
+    state: present
   become: true
-  tags: [packages]
   ignore_errors: yes
 
-# Create Cultivator VirtualEnv FilePath
-- name: "[Cultivator - VirtualEnv] Create VirtualEnv Path"
-  file:
-    path: "{{ pyenv_virtualenv_path }}"
-    state: directory
-    mode: '0755'
-  tags: [pip]
-
-
-  #- name: Install python-pip via yum.
-  #  yum: 
-  #    name: "{{ awscli_pip_package }}" 
-  #    state: latest
-  #  become: yes

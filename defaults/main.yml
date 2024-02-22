@@ -1,34 +1,11 @@
 ---
-# defaults file for awscli
+# defaults file for azurecli
 
-#awscli_pip_package: python-pip
-awscli_version: 1.11.73
+azurecli_base_packages:
+  - zip
+  - unzip
+  - azure-cli
 
-awscli_users: []
-
-# defaults file for ansible-role-cultivator
-
-# VirtualEnv that Cultivator uses as a working/install dir
-pyenv_virtualenv_path: "/opt/cultivator"
-
-# Base Packages
-pyenv_base_packages:
-    - git
-    - pyOpenSSL
-    - python-netaddr
-    - python-six
-    - python-virtualenv
-    - libselinux-python
-    #- python-pip
-    #- python2-boto3
-    #- python-click
-    #- python-httplib2
-
-# Packages to install with pip
-pyenv_pip_packages:
-    - ansible-tower-cli
-    - boto
-    - botocore
-
-# Extra args that can be passed to pip
-pyenv_pip_extra_args: ""
+azurecli_rpm_key: https://packages.microsoft.com/keys/microsoft.asc
+azurecli_rhel8_repo_rpm: https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
+azurecli_rhel9_repo_rpm: https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm

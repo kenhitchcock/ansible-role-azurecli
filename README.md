@@ -1,9 +1,7 @@
-Ansible Role: AWS CLI
+Ansible Role: Azure CLI
 =========
 
-[![Build Status](https://travis-ci.org/tommarshall/ansible-role-awscli.svg?branch=master)](https://travis-ci.org/tommarshall/ansible-role-awscli)
-
-Installs [AWS Command Line Interface](https://aws.amazon.com/cli/) on RHEL/CentOS or Debian/Ubuntu servers via `pip`. Configures AWS CLI user credentials, including support for profiles.
+Installs [Azure Command Line Interface](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=dnf) on RHEL/CentOS or Debian/Ubuntu servers.
 
 Requirements
 ------------
@@ -12,41 +10,18 @@ None.
 
 Role Variables
 --------------
-
-```yml
-# Name of the 'pip' package to install
-awscli_pip_package: python-pip
-
-# Version of 'awscli' to install
-# 1.16.116 was latest as of 8th July 2019
-awscli_version: 1.16.116
+Variables are preconfigured in the defaults/main.yml. Change only if the Microsoft Website updates.
 ```
+azurecli_base_packages:
+  - zip
+  - unzip
+  - azure-cli
 
-```yml
-awscli_users: []
+azurecli_rpm_key: https://packages.microsoft.com/keys/microsoft.asc
+azurecli_rhel8_repo_rpm: https://packages.microsoft.com/config/rhel/8/packages-microsoft-prod.rpm
+azurecli_rhel9_repo_rpm: https://packages.microsoft.com/config/rhel/9.0/packages-microsoft-prod.rpm
 
-# Example:
-#
-# awscli_users:
-#   - username: joebloggs
-#     access_key_id: AKIAIOSFODNN7EXAMPLE
-#     secret_access_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-#     region: eu-west-1
-#     output: text
-#   - username: janebloggs
-#     profiles:
-#       - name: default
-#         access_key_id: AKIAIOSFODNN7EXAMPLE
-#         secret_access_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-#         region: eu-west-1
-#         output: text
-#       - name: foo-profile
-#         access_key_id: AKIAIOSFODNN7EXAMPLE
-#         secret_access_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-#         region: us-east-1
-#         output: json
 ```
-The users' AWS config and credentials. `profiles` is optional, but takes precedence if set, i.e. the `default` profile must be defined within `profiles`, if required.
 
 Dependencies
 ------------
@@ -58,7 +33,7 @@ Example Playbook
 
     - hosts: all
       roles:
-         - { role: tommarshall.awscli }
+         - { role: ansible-role-azurecli }
 
 License
 -------
